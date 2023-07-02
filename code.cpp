@@ -143,31 +143,6 @@ public:
         }
     }
 
-    // remove and return the value
-    // void remove(string key) {
-    //     int bucketIndex = hash(key);
-    //     MapNode<V> *head = buckets[bucketIndex];
-    //     MapNode<V> *prev = NULL;
-
-    //     while(head != NULL) {
-    //         if(head->key == key) {
-    //             if(prev == NULL) {
-    //             // if the first node has to be removed
-    //                 buckets[bucketIndex] = head->next;
-    //             }
-    //             else {
-    //                 prev->next = head->next;
-    //             }
-    //             V value = head->value; // delete node, return value
-    //             head->next = NULL;
-    //             delete head;
-    //             --count; // decrease count as one of the nodes has been deleted
-    //         }
-    //         prev = head;
-    //         head = head->next;
-    //     }
-    // }   
-
     void remove(string key) {
         int bucketIndex = hash(key);
         MapNode<V> *head = buckets[bucketIndex];
