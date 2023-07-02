@@ -143,30 +143,6 @@ public:
         }
     }
 
-    // void insert(string key, V value) {
-    //     int bucketIndex = hash(key);
-    //     MapNode<V> *head = buckets[bucketIndex];
-    //     MapNode<V> *prev = NULL;
-
-    //     while(head != NULL && head->getKey() != key) {
-    //         prev = head;
-    //         head = head->getNext();
-    //     }
-
-    //     if(head == NULL) {
-    //         head = new MapNode<V>(key, value);
-    //         if(prev == NULL) {
-    //             buckets[bucketIndex] = head;
-    //         }
-    //         else {
-    //             prev->setNext(head);
-    //         }
-    //     }
-    //     else {
-    //         head->setValue(value);
-    //     }
-    // }
-
     // remove and return the value
     // void remove(string key) {
     //     int bucketIndex = hash(key);
@@ -225,34 +201,39 @@ public:
 };
 
 int main() {
-    // inserting some int values
-    // MyMap<int> mp;
-    // for(int i=0 ; i<10 ; i++) {
-    //     char c = '0' + i;
-    //     string key = "abc";
-    //     key += c;
-    //     int value = i + 1;
-    //     mp.insert(key, value);
-    // }
-    // cout << mp.size() << endl;
-    // for(int i=0 ; i<10 ; i++) {
-    //     char c = i + '0';
-    //     string key = "abc";
-    //     key += c;
-    //     cout << key << " " << mp.getValue(key) << endl;
-    // }
-    // cout << endl;
-    // mp.remove("abc4");
-    // mp.remove("abc2");
-    // for(int i=0 ; i<10 ; i++) {
-    //     char c = i + '0';
-    //     string key = "abc";
-    //     key += c;
-    //     cout << key << " " << mp.getValue(key) << endl;
-    // }
-    // cout << endl << endl;
 
-    // inserting some string values
+    // INT VALUES
+
+    MyMap<int> mp;
+    for(int i=0 ; i<10 ; i++) {
+        char c = '0' + i;
+        string key = "abc";
+        key += c;
+        int value = i + 1;
+        mp.insert(key, value);
+    }
+    cout << mp.size() << endl;
+    for(int i=0 ; i<10 ; i++) {
+        char c = i + '0';
+        string key = "abc";
+        key += c;
+        cout << key << " - " << mp.getValue(key) << endl;
+    }
+    cout << endl;
+    mp.remove("abc4");
+    mp.remove("abc2");
+    for(int i=0 ; i<10 ; i++) {
+        char c = i + '0';
+        string key = "abc";
+        key += c;
+        cout << key << " - " << mp.getValue(key) << endl;
+    }
+    cout << endl;
+
+
+
+    // STRING VALUES
+
     MyMap<string> mps;
     mps.insert("abc0", "stu0");
     mps.insert("abc1", "stu1");
@@ -263,15 +244,29 @@ int main() {
     cout << "abc1" << " - " << mps.getValue("abc1") << endl;
     cout << "abc2" << " - " << mps.getValue("abc2") << endl;
     cout << "abc3" << " - " << mps.getValue("abc3") << endl;
-.
+
     mps.remove("abc3");
     cout << mps.size() << endl;
-    // for(int i=0 ; i<4 ; i++) {
-    //     char c = i + '0';
-    //     string key = "abc";
-    //     key += c;
-    //     cout << key << " - " << mps.getValue(key) << endl;
-    // }
-    // cout << mps.getValue("abc3") << endl;
+    cout << endl;
+
+
+
+    // DOUBLE VALUES
+
+    MyMap<double> mpd;
+    mpd.insert("key1", 3.567);
+    mpd.insert("key2", 8.256);
+    mpd.insert("key3", 9.314);
+    mpd.insert("key4", 8.456); 
+    cout << mpd.size() << endl;
+    for(int i=1 ; i<=4 ; i++) {
+        char c = i + '0';
+        string key = "key";
+        key += c;
+        cout << key << " - " << mpd.getValue(key) << endl;
+    }
+    mpd.remove("key4");
+    cout << mpd.size() << endl;
+    cout << "key4" << " - " << mpd.getValue("key4") << endl;
     return 0;
 }
