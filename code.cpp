@@ -7,10 +7,11 @@ using namespace std;
 // the node of the LLs in the buckets array
 template<class T>
 class MapNode {
-public:
+private:
     string key;
     T value;
     MapNode *next;
+public:
     MapNode(string key, T value) {
         this->key = key;
         this->value = value;
@@ -18,6 +19,21 @@ public:
     }
     ~MapNode() {
         delete next;
+    }
+    string getKey() {
+        return key;
+    }
+    T getValue() {
+        return value;
+    }
+    void setValue(T value) {
+        MapNode::value = value;
+    }
+    MapNode *getNext() {
+        return next;
+    }
+    void setNext(MapNode *next) {
+        MapNode::next = next;
     }
 };
 
@@ -53,10 +69,10 @@ private:
         for(int i=0 ; i<oldNumBuckets ; i++) {
             MapNode<V> *head = temp[i];
             while(head != NULL) {
-                string key = head->key;
-                V value = head->value;
+                string key = head->getKey();
+                V value = head->getValue();
                 insert(key, value);
-                head = head->next;
+                head = head->getNext();
             }
         }
 
@@ -93,10 +109,10 @@ public:
         int bucketIndex = hash(key);
         MapNode<V> *head = buckets[bucketIndex];
         while(head != NULL) {
-            if(head->key == key) {
-                return head->value;
+            if(head->getKey() == key) {
+                return head->getValue();
             }
-            head = head->next;
+            head = head->getNext();
         }
         return 0;
     }
@@ -108,16 +124,16 @@ public:
         MapNode<V> *head = buckets[bucketIndex];
 
         while(head != NULL) {
-            if(head->key == key) {
-                head->value = value;
+            if(head->getKey() == key) {
+                head->setValue(value);
                 return;
             }
-            head = head->next;
+            head = head->getNext();
         }
 
         // if the end has been reached and the existing key hasn't been found
         MapNode<V> *newNode = new MapNode<V>(key, value);
-        newNode->next = buckets[bucketIndex];
+        newNode->setNext(buckets[bucketIndex]);
         buckets[bucketIndex] = newNode;
         ++count; // count only when a new node has been inserted 
         double loadFactor = (1.0 * count) / numBuckets;
@@ -127,30 +143,80 @@ public:
         }
     }
 
+    // void insert(string key, V value) {
+    //     int bucketIndex = hash(key);
+    //     MapNode<V> *head = buckets[bucketIndex];
+    //     MapNode<V> *prev = NULL;
+
+    //     while(head != NULL && head->getKey() != key) {
+    //         prev = head;
+    //         head = head->getNext();
+    //     }
+
+    //     if(head == NULL) {
+    //         head = new MapNode<V>(key, value);
+    //         if(prev == NULL) {
+    //             buckets[bucketIndex] = head;
+    //         }
+    //         else {
+    //             prev->setNext(head);
+    //         }
+    //     }
+    //     else {
+    //         head->setValue(value);
+    //     }
+    // }
+
     // remove and return the value
+    // void remove(string key) {
+    //     int bucketIndex = hash(key);
+    //     MapNode<V> *head = buckets[bucketIndex];
+    //     MapNode<V> *prev = NULL;
+
+    //     while(head != NULL) {
+    //         if(head->key == key) {
+    //             if(prev == NULL) {
+    //             // if the first node has to be removed
+    //                 buckets[bucketIndex] = head->next;
+    //             }
+    //             else {
+    //                 prev->next = head->next;
+    //             }
+    //             V value = head->value; // delete node, return value
+    //             head->next = NULL;
+    //             delete head;
+    //             --count; // decrease count as one of the nodes has been deleted
+    //         }
+    //         prev = head;
+    //         head = head->next;
+    //     }
+    // }   
+
     void remove(string key) {
         int bucketIndex = hash(key);
         MapNode<V> *head = buckets[bucketIndex];
         MapNode<V> *prev = NULL;
-
-        // while(head != NULL) {
-        //     if(head->key == key) {
-        //         if(prev == NULL) {
-        //         // if the first node has to be removed
-        //             buckets[bucketIndex] = head->next;
-        //         }
-        //         else {
-        //             prev->next = head->next;
-        //         }
-        //         V value = head->value; // delete node, return value
-        //         head->next = NULL;
-        //         delete head;
-        //         --count; // decrease count as one of the nodes has been deleted
-        //     }
-        //     prev = head;
-        //     head = head->next;
-        // }
         
+        while(head != NULL && head->getKey() != key) {
+            prev = head;
+            head = head->getNext();
+        }
+
+        if(head == NULL) {
+            // key not found
+            return;
+        }
+        else {
+            if(prev == NULL) {
+                // the first node
+                buckets[bucketIndex] = head->getNext();
+            }
+            else {
+                prev->setNext(head->getNext());
+            }
+            --count;
+            delete head;
+        }
     }
 
     double getLoadFactor() {
@@ -160,59 +226,52 @@ public:
 
 int main() {
     // inserting some int values
-    MyMap<int> mp;
-    for(int i=0 ; i<10 ; i++) {
-        char c = '0' + i;
-        string key = "abc";
-        key += c;
-        int value = i + 1;
-        mp.insert(key, value);
-    }
-    cout << mp.size() << endl;
-    for(int i=0 ; i<10 ; i++) {
-        char c = i + '0';
-        string key = "abc";
-        key += c;
-        cout << key << " " << mp.getValue(key) << endl;
-    }
-    cout << endl;
-    mp.remove("abc4");
-    mp.remove("abc2");
-    for(int i=0 ; i<10 ; i++) {
-        char c = i + '0';
-        string key = "abc";
-        key += c;
-        cout << key << " " << mp.getValue(key) << endl;
-    }
-    cout << endl << endl;
+    // MyMap<int> mp;
+    // for(int i=0 ; i<10 ; i++) {
+    //     char c = '0' + i;
+    //     string key = "abc";
+    //     key += c;
+    //     int value = i + 1;
+    //     mp.insert(key, value);
+    // }
+    // cout << mp.size() << endl;
+    // for(int i=0 ; i<10 ; i++) {
+    //     char c = i + '0';
+    //     string key = "abc";
+    //     key += c;
+    //     cout << key << " " << mp.getValue(key) << endl;
+    // }
+    // cout << endl;
+    // mp.remove("abc4");
+    // mp.remove("abc2");
+    // for(int i=0 ; i<10 ; i++) {
+    //     char c = i + '0';
+    //     string key = "abc";
+    //     key += c;
+    //     cout << key << " " << mp.getValue(key) << endl;
+    // }
+    // cout << endl << endl;
 
     // inserting some string values
     MyMap<string> mps;
-    for(int i=0 ; i<9 ; i++) {
-        string val = "stu";
-        char c = i + 1 + '0';
-        val += c;
-        string key = "abc";
-        char s = i + '0';
-        key += s;
-        mps.insert(key, val);
-    }
+    mps.insert("abc0", "stu0");
+    mps.insert("abc1", "stu1");
+    mps.insert("abc2", "stu2");
+    mps.insert("abc3", "stu3");
     cout << mps.size() << endl;
-    for(int i=0 ; i<9 ; i++) {
-        string key = "abc";
-        char s = i + '0';
-        key += s;
-        cout <<  key << " " << mps.getValue(key) << endl;
-    }
-    cout << endl;
-    mps.remove("abc0");
-    mps.remove("abc7");
-    // for(int i=0 ; i<10 ; i++) {
+    cout << "abc0" << " - " << mps.getValue("abc0") << endl;
+    cout << "abc1" << " - " << mps.getValue("abc1") << endl;
+    cout << "abc2" << " - " << mps.getValue("abc2") << endl;
+    cout << "abc3" << " - " << mps.getValue("abc3") << endl;
+.
+    mps.remove("abc3");
+    cout << mps.size() << endl;
+    // for(int i=0 ; i<4 ; i++) {
+    //     char c = i + '0';
     //     string key = "abc";
-    //     char s = i + '0';
-    //     key += s;
-    //     cout <<  key << " " << mps.getValue(key) << endl;
+    //     key += c;
+    //     cout << key << " - " << mps.getValue(key) << endl;
     // }
-    cout << mps.getValue("abc7");
+    // cout << mps.getValue("abc3") << endl;
     return 0;
 }
