@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-/* HASHMAP IMPLEMENTATION USING SEPARATE HASHING */
+/* HASHMAP IMPLEMENTATION USING SEPARATE CHAINING */
 
 // each cell of the bucket is a LL
 // the node of the LLs in the buckets array
@@ -49,10 +49,8 @@ private:
         int power = 1;
         int p = 37;
         for(int i=key.size()-1 ; i>=0 ; i--) {
-            hashcode += key[i] * power;
-            power *= p;
-            hashcode %= numBuckets;
-            power %= numBuckets;
+            hashcode = (hashcode + key[i] * power) % numBuckets;
+            power = (power * p) % numBuckets;
         }
         return hashcode % numBuckets;
     }
