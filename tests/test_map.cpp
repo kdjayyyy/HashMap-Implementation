@@ -63,6 +63,25 @@ void testPointerKey()
    std::cout << "Pointer key tests passed!" << std::endl;
 }
 
+// Custom function implemented for the demonstration of the code in the readme file
+void demoFunction()
+{
+   MyMap<int, std::string> map;
+
+   // Insert key-value pairs
+   map.insert(1, "One");
+   map.insert(2, "Two");
+
+   // Retrieve value by key
+   std::cout << "Key 1: " << map.getValue(1) << std::endl;
+
+   // Remove key-value pair
+   map.remove(1);
+
+   // Get size
+   std::cout << "Size: " << map.size() << std::endl;
+}
+
 int main()
 {
    testIntKey();
@@ -70,6 +89,8 @@ int main()
    testCharKey();
    testStringKey();
    testPointerKey();
+
+   // demoFunction();
 
    return 0;
 }
