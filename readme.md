@@ -1,4 +1,4 @@
-# MyMap Implementation
+# HashMap Implementation
 
 This repository contains the implementation of a custom hash map (similar to `std::unordered_map`), with support for various key types including `int`, `double`, `char`, `string`, and pointers. The hash map utilizes separate chaining for collision handling.
 
